@@ -3,6 +3,7 @@ from tkinter import ttk
 import tkinter.messagebox
 import os
 import time
+import sys
 
 
 
@@ -31,6 +32,7 @@ class Write:
 
     def quit(self):
         self.root.quit()
+        sys.exit()
 
 
     def readTxt(self):
@@ -228,7 +230,7 @@ class Write:
             self.cmb.current(0)
         except:
             pass
-        # self.root.protocol("WM_DELETE_WINDOW", self.quit)
+        self.root.protocol("WM_DELETE_WINDOW", self.quit)
         label1 = tk.Label(self.root, textvariable=self.label1_text, fg='red').place(x=82, y=65)
         self.label1_text.set('请选择您要操作的词组')
         self.button1 = tk.Button(self.root, textvariable=self.button1_text, width=10, command=self.openadd)
@@ -266,14 +268,18 @@ class Add:
         Text4 = tk.Text(self.master, width=10, height=4, state='disabled')
         Text1.place(x=50, y=40)
         Text3.place(x=360, y=40)
-        Text2.place(x=50, y=200)
-        Text4.place(x=360, y=200)
+        Text2.place(x=50, y=150)
+        Text4.place(x=360, y=150)
         Text5 = tk.Text(self.master, width=10, height=4)
         Text6 = tk.Text(self.master, width=10, height=4)
         Text5.place(x=200, y=40)
-        Text6.place(x=200, y=200)
-        # button1 = tk.Button(self.master, text='返回', command=self.fd)
-        # button1.pack()
+        Text6.place(x=200, y=150)
+        button1 = tk.Button(self.master, text='上一个', width=10, height=3)
+        button2 = tk.Button(self.master, text='保存', width=10, height=3)
+        button3 = tk.Button(self.master, text='下一个', width=10, height=3)
+        button1.place(x=50, y=230)
+        button2.place(x=200, y=230)
+        button3.place(x=360, y=230)
 
 if __name__ == '__main__':
     write = Write()
