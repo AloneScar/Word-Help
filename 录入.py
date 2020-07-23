@@ -29,6 +29,7 @@ class Write:
                 pass
         self.readTxt()
         print(self.word_dict)
+        print(self.word_dict['English']['2020-05-23'][0])
 
     def quit(self):
         self.root.quit()
@@ -36,7 +37,7 @@ class Write:
 
 
     def readTxt(self):
-        with open(r'./file/English.txt', 'r') as file1:
+        with open(r'./file/English.txt', 'r', encoding='utf-8') as file1:
             for word in file1.readlines():
                 if word == "\n":
                     break
@@ -49,7 +50,7 @@ class Write:
                     continue
                 self.word_dict['English'].setdefault(unit,[]).append(word)
 
-        with open(r'./file/Chinese.txt', 'r') as file1:
+        with open(r'./file/Chinese.txt', 'r', encoding='utf-8') as file1:
             for word in file1.readlines():
                 if word == "\n":
                     break
@@ -195,8 +196,9 @@ class Write:
         tkinter.messagebox.showinfo('帮助','还未开发')
 
     def openadd(self):
+        GroupName = self.cmb.get()
         self.root.withdraw()
-        add = Add(self.root)
+        add = Add(self.root, self.word_dict['English'][GroupName], self.word_dict['Chinese'][GroupName])
         if self.openfigure == 1:
             add.run()
             self.openfigure = 0
@@ -240,14 +242,37 @@ class Write:
 
 
 class Add:
-    def __init__(self, root):
+    def __init__(self, root, english_list, chinese_list):
         self.root = root
+        self.leftc_word = ''
+        self.lefte_word = ''
+        self.rightee_word = ''
+        self.rightec_word = ''
+        self.middlec_word = ''
+        self.middlee_word = ''
+        self.now_middle = 0
+        self.english_list = english_list
+        self.chinese_list = chinese_list
 
     def quit_past(self):
         self.master.withdraw()
         self.root.update()
         self.root.deiconify()
         self.root.mainloop()
+
+    def getNowWord(self):
+        if self.now_middle == 0:
+            self.lefte_word = ''
+            self.leftc_word = ''
+            self.middlee_word = self.english_list[0]
+            self.middlec_word = self.chinese_list[0]
+            if len(self.english_list) > 1:
+                self.rightee_word = self.english_list[1]
+                self.rightec_word = self.chinese_list[1]
+            else:
+                self.rightee_word = ''
+                self.rigthec_word = ''
+
 
     def run(self):
         self.master = tk.Tk()
@@ -262,18 +287,29 @@ class Add:
         self.master.config(menu=m1)
         self.master.protocol("WM_DELETE_WINDOW", self.quit_past)
         self.master.resizable(0,0)
-        Text1 = tk.Text(self.master, width=10, height=4, state='disabled')
-        Text2 = tk.Text(self.master, width=10, height=4, state='disabled')
-        Text3 = tk.Text(self.master, width=10, height=4, state='disabled')
-        Text4 = tk.Text(self.master, width=10, height=4, state='disabled')
+        Text1 = tk.Text(self.master, width=10, height=4, state='normal')
+        Text2 = tk.Text(self.master, width=10, height=4, state='normal')
+        Text3 = tk.Text(self.master, width=10, height=4, state='normal')
+        Text4 = tk.Text(self.master, width=10, height=4, state='normal')
         Text1.place(x=50, y=40)
         Text3.place(x=360, y=40)
         Text2.place(x=50, y=150)
         Text4.place(x=360, y=150)
+        self.getNowWord()
+        Text1.insert('insert', self.lefte_word)
+        Text2.insert('insert', self.leftc_word)
+        Text3.insert('insert', self.rightee_word)
+        Text4.insert('insert', self.rightec_word)
+        Text1.config(state='disabled')
+        Text2.config(state='disabled')
+        Text3.config(state='disabled')
+        Text4.config(state='disabled')
         Text5 = tk.Text(self.master, width=10, height=4)
         Text6 = tk.Text(self.master, width=10, height=4)
         Text5.place(x=200, y=40)
         Text6.place(x=200, y=150)
+        Text5.insert('insert', self.middlee_word)
+        Text6.insert('insert', self.middlec_word)
         button1 = tk.Button(self.master, text='上一个', width=10, height=3)
         button2 = tk.Button(self.master, text='保存', width=10, height=3)
         button3 = tk.Button(self.master, text='下一个', width=10, height=3)
